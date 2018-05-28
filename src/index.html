@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> The GoT Calculator </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+    <script src="js/calculator.js" type="text/javascript"></script>
+
+    <script src="js/person.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <div class="p-3 mb-2 bg-info text-white">
+                <h1 class="display-3">GoT Calculator</h1>
+                <p class="lead">Which Game of Thrones character are you?</p>
+                <hr class="my-4">
+                <p> Submit your height and weight and see what Thrones character you are! </p>
+            </div>
+        </div>
+
+        <form id="calculate">
+            <div id="metric-input" class="form-group row">
+                <div class="col-auto">
+                    <label for="weight-in-kgs">Weight in kgs</label>
+                    <input type="text" class="form-control" id="weight-in-kgs" placeholder="Enter weight in kgs">
+                </div>
+                <div class="col-auto">
+                    <label for="height-in-cm">Height in cm</label>
+                    <input type="text" class="form-control" id="height-in-cm" placeholder="Enter Height in cm">
+                </div>
+            </div>
+
+            <div id="imperial-input" class="form-group row">
+                <div class="col-auto">
+                    <label for="weight-in-pounds">Weight</label>
+                    <input type="text" class="form-control" id="weight-in-pounds" placeholder="Enter weight">
+                </div>
+
+                <div class="col-auto">
+                    <label for="height-in-feet">Height in feet</label>
+                    <input type="text" class="form-control" id="height-in-feet" placeholder="Enter Height in feet">
+                </div>
+
+                <div class="col-auto">
+                    <label for="height-in-inches">Height in inches</label>
+                    <input type="text" class="form-control" id="height-in-inches" placeholder="Enter Height in inches">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-auto">
+                    <select class="form-control" id="mySelect">
+                        <option value="metric">Metric System</option>
+                        <option value="imperial">Imperial System</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-danger">Calculate</button>
+                </div>
+            </div>
+        </form>
+
+        <span id="display_value"></span>
+        <span id="display_message"></span>
+    </div>
+
+    <div class="container">
+        <div class="col-auto">
+            <div>
+                <p class="text-secondary">
+                    Disclaimer: Don't be discouraged if you didn't get to be your favorite character. Valar Morghulis.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#mySelect').change(function () {
+                var weight = parseInt($('#weight').val(), 10);
+
+                if ($(this).val() == 'metric') {
+                    $('#metric-input').show();
+                    $('#imperial-input').hide();
+                } else {
+                    $('#metric-input').hide();
+                    $('#imperial-input').show();
+                }
+            }).change();
+
+            $('#calculate').submit(function (event) {
+                event.preventDefault();
+
+                if ($("#mySelect").val() == "metric") {
+                    var w = parseFloat($('#weight-in-kgs').val());
+                    var h = parseFloat($('#height-in-cm').val());
+                    var person = new Person({
+                        weight: w,
+                        height: h,
+                    });
+                    person.calculate_bmi_metric();
+                } else {
+                    var w = parseFloat($('#weight-in-pounds').val());
+                    var feet = parseFloat($('#height-in-feet').val());
+                    var inches = parseFloat($('#height-in-inches').val());
+                    var person = new Person({
+                        weight: w,
+                        height: feet * 12 + inches,
+                    });
+                    person.calculate_bmi_imperial();
+                }
+
+                $('#display_value').html('Your BMI is ' + person.bmiValue);
+                $('#display_message').html('and you are ' + person.bmiMessage);
+            });
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>

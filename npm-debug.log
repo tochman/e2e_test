@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/opt/nvm/v0.10.33/bin/node',
+1 verbose cli   '/usr/local/opt/nvm/v0.10.33/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'specs' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink /usr/local/opt/nvm/v0.10.33/bin/node
+5 verbose run-script [ 'prespecs', 'specs', 'postspecs' ]
+6 info prespecs e2e_test@1.0.0
+7 info specs e2e_test@1.0.0
+8 verbose unsafe-perm in lifecycle true
+9 info e2e_test@1.0.0 Failed to exec specs script
+10 error e2e_test@1.0.0 specs: `mocha --recursive  --reporter=spec spec`
+10 error Exit status 8
+11 error Failed at the e2e_test@1.0.0 specs script.
+11 error This is most likely a problem with the e2e_test package,
+11 error not with npm itself.
+11 error Tell the author that this fails on your system:
+11 error     mocha --recursive  --reporter=spec spec
+11 error You can get their info via:
+11 error     npm owner ls e2e_test
+11 error There is likely additional logging output above.
+12 error System Darwin 14.5.0
+13 error command "/usr/local/opt/nvm/v0.10.33/bin/node" "/usr/local/opt/nvm/v0.10.33/bin/npm" "run" "specs"
+14 error cwd /Users/thomas/Demos/e2e_test
+15 error node -v v0.10.33
+16 error npm -v 1.4.28
+17 error code ELIFECYCLE
+18 verbose exit [ 1, true ]
