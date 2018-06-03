@@ -1,11 +1,7 @@
 
 
 const { expect } = require('chai');
-// const BMICalculator = require('../src/js/calculator');
-// const Person = require('../src/js/person');
-//  const { Person, BMICalculator} = require('./test-helper')
-
-
+const { Person, BMICalculator } = require('./spec.helper')
 
 describe("Person", () => {
     let person = new Person({
@@ -13,12 +9,7 @@ describe("Person", () => {
         height: 186
     });
 
-    beforeEach(function () {
-        // let person = new Person({
-        //     weight: 90,
-        //     height: 186
-        // });
-    });
+
 
     it("should have weight of 90", () => {
         expect(person.weight).to.equal(90);

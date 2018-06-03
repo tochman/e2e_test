@@ -35,6 +35,3 @@ function setBMIMessage(obj) {
     }
 
 }
-
-module.exports = BMICalculator;
-
