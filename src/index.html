@@ -93,45 +93,106 @@
 
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#mySelect').change(function () {
-                var weight = parseInt($('#weight').val(), 10);
+        selectElement = document.getElementById('mySelect');
+        calculateForm = document.getElementById('calculate');
+        metricInput = document.getElementById('metric-input');
+        imperialInput = document.getElementById('imperial-input');
+        displayValueElement = document.getElementById('display_value');
+        displayMessageElement = document.getElementById('display_message');
+        calculationMethod = 'metric'
+        metricInput.style.display = '';
+        imperialInput.style.display = 'none';
 
-                if ($(this).val() == 'metric') {
-                    $('#metric-input').show();
-                    $('#imperial-input').hide();
-                } else {
-                    $('#metric-input').hide();
-                    $('#imperial-input').show();
-                }
-            }).change();
+        document.addEventListener('DOMContentLoaded', () => {
+            selectElement.addEventListener('change', event => {
+                switchCalculationMethod(event.target.value);
+            });
 
-            $('#calculate').submit(function (event) {
+            calculateForm.addEventListener('submit', event => {
                 event.preventDefault();
+                calculateBMI(selectElement)
+                    .then(person => {
+                        displayValueElement.innerHTML = `Your BMI is ${person.bmiValue}`;
+                        displayMessageElement.innerHTML = `and you are ${person.bmiMessage}`;
+                    })
+            })
+        })
 
-                if ($("#mySelect").val() == "metric") {
-                    var w = parseFloat($('#weight-in-kgs').val());
-                    var h = parseFloat($('#height-in-cm').val());
-                    var person = new Person({
+        const switchCalculationMethod = (selectedMethod) => {
+            if (selectedMethod === 'metric') {
+                metricInput.style.display = '';
+                imperialInput.style.display = 'none';
+            } else {
+                metricInput.style.display = 'none';
+                imperialInput.style.display = '';
+            }
+            calculationMethod = selectedMethod;
+        }
+
+        const calculateBMI = () => {
+            return new Promise(resolve => {
+                if (calculationMethod === 'metric') {
+                    let w = parseFloat(document.getElementById('weight-in-kgs').value);
+                    let h = parseFloat(document.getElementById('height-in-cm').value);
+                    let person = new Person({
                         weight: w,
                         height: h,
                     });
                     person.calculate_bmi_metric();
+                    resolve(person);
                 } else {
-                    var w = parseFloat($('#weight-in-pounds').val());
-                    var feet = parseFloat($('#height-in-feet').val());
-                    var inches = parseFloat($('#height-in-inches').val());
+                    let w = parseFloat(document.getElementById('weight-in-pounds').value);
+                    let feet = parseFloat(document.getElementById('height-in-feet').value);
+                    let inches = parseFloat(document.getElementById('height-in-inches').value);
                     var person = new Person({
                         weight: w,
                         height: feet * 12 + inches,
                     });
                     person.calculate_bmi_imperial();
-                }
 
-                $('#display_value').html('Your BMI is ' + person.bmiValue);
-                $('#display_message').html('and you are ' + person.bmiMessage);
-            });
-        });
+                }
+                
+            })
+        }
+        // $(document).ready(function () {
+            // $('#mySelect').change(function () {
+            //     var weight = parseInt($('#weight').val(), 10);
+
+            //     if ($(this).val() == 'metric') {
+            //         $('#metric-input').show();
+            //         $('#imperial-input').hide();
+            //     } else {
+            //         $('#metric-input').hide();
+            //         $('#imperial-input').show();
+            //     }
+            // }).change();
+
+            // $('#calculate').submit(function (event) {
+            //     event.preventDefault();
+
+            //     if ($("#mySelect").val() == "metric") {
+            //         var w = parseFloat($('#weight-in-kgs').val());
+            //         var h = parseFloat($('#height-in-cm').val());
+            //         var person = new Person({
+            //             weight: w,
+            //             height: h,
+            //         });
+            //         person.calculate_bmi_metric();
+            //     } else {
+            //         var w = parseFloat($('#weight-in-pounds').val());
+            //         var feet = parseFloat($('#height-in-feet').val());
+            //         var inches = parseFloat($('#height-in-inches').val());
+            //         var person = new Person({
+            //             weight: w,
+            //             height: feet * 12 + inches,
+            //         });
+            //         person.calculate_bmi_imperial();
+            //     }
+
+            //     $('#display_value').html('Your BMI is ' + person.bmiValue);
+            //     $('#display_message').html('and you are ' + person.bmiMessage);
+            // });
+        // });
 
 
     </script>
