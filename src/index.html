@@ -93,42 +93,61 @@
 
 
     <script type="text/javascript">
-        selectElement = document.getElementById('mySelect');
+        // When the page hac loaded, we create a set of global variables holding elements that we will use
+        // The variable names speak for themselves       
+        methodSelectElement = document.getElementById('mySelect');
         calculateForm = document.getElementById('calculate');
-        metricInput = document.getElementById('metric-input');
-        imperialInput = document.getElementById('imperial-input');
+        metricInputs = document.getElementById('metric-input');
+        imperialInputs = document.getElementById('imperial-input');
         displayValueElement = document.getElementById('display_value');
         displayMessageElement = document.getElementById('display_message');
+
+        // We also assign the Metric method as default calculation method
         calculationMethod = 'metric'
+        // And make sure that the right form is being displayed
         metricInput.style.display = '';
         imperialInput.style.display = 'none';
 
+        // Once the page has loaded, we add listeners to the select tag and the form
+        // there's a lot ol events that we can listen for. 
+        // here, we listen for when a value has changed and when a form has been submitted
         document.addEventListener('DOMContentLoaded', () => {
-            selectElement.addEventListener('change', event => {
+            // Change listener on the submit tag
+            methodSelectElement.addEventListener('change', event => {
                 switchCalculationMethod(event.target.value);
             });
-
+            // Submit listener on the form
             calculateForm.addEventListener('submit', event => {
+                // 'preventDefault' prevents the default action the browser makes on the form
+                // we only want some java script to be executed, nothing else
                 event.preventDefault();
+                // the 'claculateBMI' function will create a ne instance of Person, calculate the 
+                // BMI and return the object. Its a asynchronous function (making use of a Promise)
+                // mening we can wait for the result and execute more code once we get the result back. Hence the use of '.then()'
                 calculateBMI(selectElement)
                     .then(person => {
+                        // once we have the result of the calculation, it's time to modify
+                        // the document and display the results for the user to see. 
                         displayValueElement.innerHTML = `Your BMI is ${person.bmiValue}`;
                         displayMessageElement.innerHTML = `and you are ${person.bmiMessage}`;
                     })
             })
         })
 
+        // The 'switchCalculationMethod' function toggles the visibility of the form elements
+        // and sets the 'calculationMethod' used for choosing what calculation method should be used
         const switchCalculationMethod = (selectedMethod) => {
             if (selectedMethod === 'metric') {
-                metricInput.style.display = '';
-                imperialInput.style.display = 'none';
+                metricInputs.style.display = '';
+                imperialInputs.style.display = 'none';
             } else {
-                metricInput.style.display = 'none';
-                imperialInput.style.display = '';
+                metricInputs.style.display = 'none';
+                imperialInputs.style.display = '';
             }
             calculationMethod = selectedMethod;
         }
-
+        // The 'calculateBMI' gathers data from imput fields and creates an instance of the Person object,
+        // performs the calculation of BMI and returns the object for further use (see above)
         const calculateBMI = () => {
             return new Promise(resolve => {
                 if (calculationMethod === 'metric') {
@@ -149,11 +168,14 @@
                         height: feet * 12 + inches,
                     });
                     person.calculate_bmi_imperial();
-
+                    resolve(person);
                 }
-                
+
             })
         }
+
+        // I left the original jQuery implementation for reference. /Thomas
+
         // $(document).ready(function () {
             // $('#mySelect').change(function () {
             //     var weight = parseInt($('#weight').val(), 10);
@@ -193,11 +215,7 @@
             //     $('#display_message').html('and you are ' + person.bmiMessage);
             // });
         // });
-
-
     </script>
-
-
 </body>
 
 </html>
